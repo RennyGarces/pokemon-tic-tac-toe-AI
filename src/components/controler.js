@@ -12,14 +12,15 @@ export function PokemonComponent({ pokemonName }) {
         const newPokemon = [
           {
             id: data.id,
-            location: data.location_area_encounters,
             abilities: data.abilities,
             experience: data.base_experience,
             default: data.is_default,
             name: data.name,
-            species: data.species,
             images: data.sprites,
-            items: data.held_items,
+            height: data.height,
+            weight: data.weight,
+            type: data.types,
+            order: data.order,
           },
         ];
 
@@ -43,8 +44,29 @@ export function PokemonComponent({ pokemonName }) {
 
   return (
     <div>
-      {console.log(pokemon)}
-      <h1>hi</h1>
+      {pokemon.map((el) => (
+        <div key={el.id}>
+          <img src={el.images.front_default} alt={el.name}></img>
+
+          <h3> Name : {el.name}</h3>
+          <ul>
+            <h3>Power:</h3>
+            {el.abilities.map((ability, index) => {
+              return <li key={index}> {ability.ability.name} </li>;
+            })}
+          </ul>
+          <h3>Level : {el.experience}</h3>
+          <h3>
+            height : {el.height} Weight: {el.weight}
+          </h3>
+          <h3>Order : {el.order}</h3>
+          <ul>
+            {el.type.map((type, index) => (
+              <li key={index}>{type.type.name}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 }

@@ -5,6 +5,11 @@ import Tictactoe from "./tic-tac-toe";
 export default function PokemonBattle() {
   const [pokemonUser, setPokemonUser] = useState("paras");
   const [pokemonComputer, setPokemonComputer] = useState("charmander");
+  const [pokemonRender, setPokemonRender] = useState([]);
+
+  function handlePokemonRender(newPokemon) {
+    setPokemonRender((pokemonRender) => [...pokemonRender, newPokemon]);
+  }
 
   function handlePokemonUser(name) {
     setPokemonUser(name);
@@ -15,14 +20,20 @@ export default function PokemonBattle() {
   return (
     <div className="container">
       <ChoosePokemon onPokemon={handlePokemonUser} />
-      <PokemonComponent pokemonName={pokemonUser} />
+      <PokemonComponent
+        pokemonName={pokemonUser}
+        onGetPokemon={handlePokemonRender}
+      />
       <Tictactoe
         nameOponent={pokemonComputer}
         nameUser={pokemonUser}
-        PokemonComponent={PokemonComponent}
+        onPokemonRender={pokemonRender}
       />
       <PokemonInput onPokemon={handlePokemonComputer} />
-      <PokemonComponent pokemonName={pokemonComputer} />
+      <PokemonComponent
+        pokemonName={pokemonComputer}
+        onGetPokemon={handlePokemonRender}
+      />
     </div>
   );
 }

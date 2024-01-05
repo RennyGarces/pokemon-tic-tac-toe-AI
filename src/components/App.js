@@ -1,9 +1,9 @@
-import PokemonArena from "./pokemonUser";
+import PokemonBattle from "./pokemonUser";
 
 export default function App() {
   return (
     <div>
-      <PokemonArena />
+      <PokemonBattle />
     </div>
   );
 }

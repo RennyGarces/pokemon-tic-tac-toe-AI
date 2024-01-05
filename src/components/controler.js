@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LoadPokemons from "./module.js";
-export function PokemonComponent({ pokemonName }) {
+export function PokemonComponent({ pokemonName, onGetPokemon }) {
   const [pokemon, setPokemon] = useState([]);
   const [error, setError] = useState(null);
 
@@ -25,6 +25,7 @@ export function PokemonComponent({ pokemonName }) {
         ];
 
         setPokemon(newPokemon);
+        onGetPokemon(newPokemon);
         setError(null);
       } catch (error) {
         setError(error);

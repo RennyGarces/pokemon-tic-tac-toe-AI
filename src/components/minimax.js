@@ -1,0 +1,43 @@
+import { calculateWinner } from "./calculateWinner";
+export function minimax(board, depth, isMaximizingPlayer) {
+  let winner = calculateWinner(board);
+
+  if (winner !== null) {
+    return winner === "X" ? -10 + depth : 1 - depth;
+  }
+
+  if (isBoardFull(board)) {
+    return 0;
+  }
+
+  if (isMaximizingPlayer) {
+    let bestScore = -Infinity;
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === null) {
+        board[i] = "O";
+        let score = minimax(board, depth + 1, false);
+        board[i] = null;
+        bestScore = Math.max(score, bestScore);
+      }
+    }
+    return bestScore;
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === null) {
+        board[i] = "X";
+        let score = minimax(board, depth + 1, true);
+        board[i] = null;
+        bestScore = Math.min(score, bestScore);
+      }
+    }
+    return bestScore;
+  }
+}
+
+function isBoardFull(board) {
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] === null) return false;
+  }
+  return true;
+}

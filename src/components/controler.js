@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from "react";
-import LoadPokemons from "./module.js";
-export function PokemonComponent({ pokemonName, onGetPokemon }) {
+import { LoadPokemons, GetPokemonsName } from "./module.js";
+export function PokemonComponent({ pokemonName, onGetPokemon, reset }) {
   const [pokemon, setPokemon] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!pokemonName) return;
-        const data = await LoadPokemons(pokemonName);
-        const newPokemon = [
-          {
-            id: data.id,
-            abilities: data.abilities,
-            experience: data.base_experience,
-            default: data.is_default,
-            name: data.name,
-            images: data.sprites,
-            height: data.height,
-            weight: data.weight,
-            type: data.types,
-            order: data.order,
-          },
-        ];
+        if (!pokemonName[0]) return;
+        let data = await LoadPokemons(pokemonName[0]);
+        if (data.name) {
+          const newPokemon = [
+            {
+              id: data.id,
+              abilities: data.abilities,
+              experience: data.base_experience,
+              default: data.is_default,
+              name: data.name,
+              images: data.sprites,
+              height: data.height,
+              weight: data.weight,
+              type: data.types,
+              order: data.order,
+              owner: pokemonName[1],
+            },
+          ];
 
-        setPokemon(newPokemon);
-        onGetPokemon(newPokemon);
+          setPokemon(newPokemon);
+          onGetPokemon(newPokemon);
+        }
         setError(null);
       } catch (error) {
         setError(error);
@@ -37,9 +40,14 @@ export function PokemonComponent({ pokemonName, onGetPokemon }) {
 
   if (error || pokemon.length < 1) {
     return (
-      <h2>
-        {error ? `Error: Sorry we don't got your pockemón try again` : ""}
-      </h2>
+      <div>
+        {error ? (
+          <p> `Error: Sorry we don't got your pockemon try again`</p>
+        ) : (
+          ""
+        )}
+        <button onClick={() => reset()}>RESET GAME</button>
+      </div>
     );
   }
 
@@ -70,4 +78,16 @@ export function PokemonComponent({ pokemonName, onGetPokemon }) {
       ))}
     </div>
   );
+}
+
+export async function PokemonsRandorComputer(onPokemon, number) {
+  const randomName = Math.floor(Math.random() * number) + 1;
+  try {
+    const data = await GetPokemonsName(randomName);
+    const name = data.results[0].name;
+
+    onPokemon(name);
+  } catch (error) {
+    throw error;
+  }
 }

@@ -1,4 +1,4 @@
-import PokemonBattle from "./pokemonUser";
+import {PokemonBattle} from "./pokemonUser";
 
 export default function App() {
   return (

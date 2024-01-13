@@ -1,7 +1,21 @@
-export default async function LoadPokemons(pokemon) {
+export async function LoadPokemons(pokemon) {
   try {
     const res = await Promise.race([
       fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`),
+      Timeout(5),
+    ]);
+    if (!res.ok)
+      throw new Error(`Sorry we can't find the pokemón error :${res.status}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function GetPokemonsName(randomName) {
+  try {
+    const res = await Promise.race([
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=1&offset=${randomName}`),
       Timeout(5),
     ]);
     if (!res.ok)

@@ -10,24 +10,30 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ nameOponent, nameUser, onPokemonRender }) {
-  const [square, setSquares] = useState(Array(9).fill(null));
-  const [imageSquare, setImageSquare] = useState(Array(9).fill(null));
+function Board({
+  nameOponent,
+  nameUser,
+  onPokemonRender,
+  onStatus,
+  square,
+  setSquares,
+  imageSquare,
+  setImageSquare,
+  onPokemonRenderCpu,
+}) {
   const [xIsNext, serXIsnext] = useState(true);
   const [user, setUser] = useState(null);
   const [computer, Setcomputer] = useState(null);
 
   /* =================Store user and computer objects============================ */
+ 
   useEffect(() => {
-    const user = onPokemonRender
-      .flatMap((render) => render)
-      .find((render) => render.name === nameUser);
-    const computer = onPokemonRender
-      .flatMap((render) => render)
-      .find((render) => render.name === nameOponent);
+    const user = onPokemonRender.find((p) => p?.name === nameUser);
+    const computer = onPokemonRenderCpu.find((p) => p?.name === nameOponent);
     setUser(user);
     Setcomputer(computer);
-  }, [onPokemonRender, nameUser, nameOponent]);
+  }, [onPokemonRender, nameUser, nameOponent, onPokemonRenderCpu]);
+
   /* ===================Variables==============================*/
   const imageFrontUser = (
     <img src={user?.images?.front_default} alt="pokemon" />
@@ -35,17 +41,51 @@ function Board({ nameOponent, nameUser, onPokemonRender }) {
   const imageFrontComp = (
     <img src={computer?.images?.front_default} alt="pokemon" />
   );
+  let level =6;
+  let Difficulty;
+  let computation = Math.abs(user?.experience - computer?.experience);
+ computation && console.log(computation);
+  /* =====================level CPU================================ */  
+  /* 
+- `Easy`: ` 0` .
+- `Medium`: `3` - 
+- `Difficult`: ` 6` - 
+- `Very fullDifficult`: `9` 
+
+*/
+
+if(computation  < 20){
+  level = 0; 
+  Difficulty = "Easy"
+};
+if(computation > 30 && computation < 70){
+  level = 3;
+  Difficulty="Medium";
+};
+if(computation > 70 && computation < 100){
+  level = 6;
+Difficulty="Difficult";
+};
+if(computation > 100){
+  level = 9;
+  Difficulty="Very fullDifficult";
+};
+
 
   /* ====================functions =============================== */
 
   function handleClick(i) {
-    if (square[i] || calculateWinner(square)) return;
+
+
+    if (square[i] || calculateWinner(square) || !computer) return;
     const nexSquares = square.slice();
     const nexImageSquare = imageSquare.slice();
 
     nexSquares[i] = "X"; // Human player's move
-    nexImageSquare[i] = (
+    nexImageSquare[i] = user?.images?.back_default ? (
       <img key={i} src={user?.images?.back_default} alt="pokemon" />
+    ) : (
+      imageFrontUser
     );
     setSquares(nexSquares);
     setImageSquare(nexImageSquare);
@@ -56,9 +96,10 @@ function Board({ nameOponent, nameUser, onPokemonRender }) {
 
     for (let i = 0; i < nexSquares.length; i++) {
       if (nexSquares[i] === null) {
-        nexSquares[i] = "O"; // AI player's move
+        nexSquares[i] = "O"; 
 
-        let score = minimax(nexSquares, 0, false);
+        let score = minimax(nexSquares, 0, false, -Infinity, Infinity, level);
+ 
         nexSquares[i] = null;
 
         if (score > bestScore) {
@@ -69,9 +110,11 @@ function Board({ nameOponent, nameUser, onPokemonRender }) {
     }
 
     if (move !== undefined) {
-      nexSquares[move] = "O"; // AI player's move
-      nexImageSquare[move] = (
+      nexSquares[move] = "O"; 
+      nexImageSquare[move] = computer?.images?.back_default ? (
         <img key={move} src={computer?.images?.back_default} alt="pokemon" />
+      ) : (
+        imageFrontComp
       );
     }
 
@@ -81,22 +124,23 @@ function Board({ nameOponent, nameUser, onPokemonRender }) {
     serXIsnext(isNext);
   }
 
-  function handleCleanBoard() {
-    const arr = Array(9).fill(null);
-    setSquares(arr);
-    setImageSquare(arr);
-  }
   /* ===================render data web site===================== */
 
   let winner = calculateWinner(square);
+  useEffect(() => {
+    onStatus(winner);
+  }, [winner, onStatus]);
 
   let status;
   if (winner) {
     status =
       winner === "X" ? (
         <>
-          <span>Winner :{user?.name ? user.name : "loading"}</span>
+          <span>{user?.name ? user.name : "loading"} You are the winner</span>
           {imageFrontUser}
+          <span>take your new pockemon</span>
+          {imageFrontComp} <span>{computer?.name} 🤩</span>
+         
         </>
       ) : (
         <>
@@ -107,33 +151,37 @@ function Board({ nameOponent, nameUser, onPokemonRender }) {
   } else if (winner === false) {
     status = (
       <div>
-        {imageFrontComp} vs {imageFrontUser}
-        <p>
-          {nameOponent} Vs {nameUser}
-          no one win play again
-        </p>
-        {winner === false && (
-          <button onClick={handleCleanBoard}>Clean Board</button>
-        )}
+        {imageFrontComp} VERSUS {imageFrontUser}
+        <p>EMPATE</p>
       </div>
     );
   } else {
-    status = xIsNext ? (
-      <>
-        <span>Next turn is for {user?.name ? user.name : "loading"}</span>
-        {imageFrontUser}
-      </>
-    ) : (
-      <>
-        <span>Next turn is for {nameOponent}</span>
-        {imageFrontComp}
-      </>
+    status = (
+      <div className="versus">
+        <span>{user?.name ? user.name : ""}</span>
+        <img src={user?.images?.front_shiny} alt="pokemon" />
+        <span>VS</span>
+        {computer?.images ? (
+          <img src={computer?.images?.front_shiny} alt="pokemon" />
+        ) : (
+          <div>
+            <img src="images/open-pokeball.png" alt="pokemon" />
+            <p>Pokeball is empty!</p>
+          </div>
+        )}
+        <span>{computer?.name ? computer.name : ""}</span>
+      </div>
     );
   }
-
+/*   - `Easy`: ` 0` .
+  - `Medium`: `3` - 
+  - `Difficult`: ` 6` - 
+  - `Very fullDifficult`: `9` 
+   */
   return (
     <>
-      <div className="status">{status}</div>
+      <>{status}</>
+      <> Difficulty: {Difficulty} {level >3 &&"take care Pokemon is Strong"} </>
       <div
         className="board-row"
         style={{
@@ -147,18 +195,33 @@ function Board({ nameOponent, nameUser, onPokemonRender }) {
             onSquareClick={() => handleClick(i)}
           />
         ))}
+       
       </div>
-
-      {winner && <button onClick={handleCleanBoard}>Clean Board</button>}
     </>
   );
 }
 
-export default function Game({ nameOponent, nameUser, onPokemonRender }) {
+export default function Game({
+  onStatus,
+  nameOponent,
+  nameUser,
+  onPokemonRender,
+  square,
+  setSquares,
+  imageSquare,
+  setImageSquare,
+  onPokemonRenderCpu,
+}) {
   return (
     <div className="game">
       <div className="game-board">
         <Board
+          onPokemonRenderCpu={onPokemonRenderCpu}
+          square={square}
+          setSquares={setSquares}
+          imageSquare={imageSquare}
+          setImageSquare={setImageSquare}
+          onStatus={onStatus}
           nameOponent={nameOponent}
           nameUser={nameUser}
           onPokemonRender={onPokemonRender}

@@ -14,43 +14,10 @@ body {
   justify-content: center;
 }
 
-h1 {
-  text-align: center;
-  margin-top: 0;
-  font-size: 22px;
-}
-
-h2 {
-  margin-top: 0;
-  font-size: 20px;
-}
-
-h3 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-h4 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-h5 {
-  margin-top: 0;
-  font-size: 14px;
-}
-
-h6 {
-  margin-top: 0;
-  font-size: 12px;
-}
-
-code {
-  font-size: 1.2em;
-}
-
-ul {
-  padding-inline-start: 20px;
+.versus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .board-row {
   display: grid;
@@ -65,22 +32,10 @@ ul {
   border: 1px solid #000000;
   font-size: 0px;
   height: 80px;
-  width: 100px;
+  width: 100%;
 }
 
 .board-row:after {
   clear: both;
   content: "";
-}
-
-.status {
-  margin-bottom: 10px;
-}
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
 }

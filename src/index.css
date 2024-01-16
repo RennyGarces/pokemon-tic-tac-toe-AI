@@ -7,12 +7,38 @@
 body {
   background-color: #606060;
 }
-.container {
+.containerBattle {
+  position: relative;
   padding: 10vh 0;
   display: flex;
   align-items: start;
   justify-content: center;
+  
+
 }
+.loading{
+  visibility: hidden;
+pointer-events: none;
+}
+.loading::after {
+  content: "";
+  visibility: visible;
+background-image: url(/public/images/Pokeball.svg);
+background-repeat: no-repeat;
+position: absolute;  
+ border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
 
 .versus {
   display: flex;

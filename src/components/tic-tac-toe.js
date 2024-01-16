@@ -43,8 +43,9 @@ function Board({
   );
   let level =6;
   let Difficulty;
-  let computation = Math.abs(user?.experience - computer?.experience);
- computation && console.log(computation);
+  let computation = user?.experience < computer?.experience ? Math.abs(user?.experience - computer?.experience):
+  Math.round(user?.experience / computer?.experience);
+
   /* =====================level CPU================================ */  
   /* 
 - `Easy`: ` 0` .
@@ -152,7 +153,7 @@ if(computation > 100){
     status = (
       <div>
         {imageFrontComp} VERSUS {imageFrontUser}
-        <p>EMPATE</p>
+        <p>draw</p>
       </div>
     );
   } else {
@@ -178,6 +179,7 @@ if(computation > 100){
   - `Difficult`: ` 6` - 
   - `Very fullDifficult`: `9` 
    */
+
   return (
     <>
       <>{status}</>
@@ -193,9 +195,9 @@ if(computation > 100){
             key={i}
             value={[imageSquare[i], square[i]]}
             onSquareClick={() => handleClick(i)}
-          />
+          /> 
         ))}
-       
+      
       </div>
     </>
   );
@@ -211,10 +213,10 @@ export default function Game({
   imageSquare,
   setImageSquare,
   onPokemonRenderCpu,
+
 }) {
   return (
-    <div className="game">
-      <div className="game-board">
+      <div >
         <Board
           onPokemonRenderCpu={onPokemonRenderCpu}
           square={square}
@@ -227,7 +229,5 @@ export default function Game({
           onPokemonRender={onPokemonRender}
         />
       </div>
-      <div className="game-info"></div>
-    </div>
   );
 }

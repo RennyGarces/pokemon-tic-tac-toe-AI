@@ -1,16 +1,37 @@
 import { useState } from "react";
 import { PokemonComponent, PokemonsRandorComputer } from "./controler";
 import Tictactoe from "./tic-tac-toe";
-
-
 export function PokemonBattle() {
-  const [pokemonUser, setPokemonUser] = useState(["paras", "user"]);
+  const [pokemonUser, setPokemonUser] = useState(["pikachu", "user"]);
   const [pokemonComputer, setPokemonComputer] = useState(["charmander", "cpu"]);
   const [pokemonRender, setPokemonRender] = useState([]);
   const [pokemonRenderCpu, setPokemonRenderCpu] = useState([]);
   const [statusGame, setStatusGame] = useState(null);
   const [square, setSquares] = useState(Array(9).fill(null));
   const [imageSquare, setImageSquare] = useState(Array(9).fill(null));
+ const [loading, setLoading] = useState(false);
+  /* loading screen */
+ let loadingCompleted = () => {
+    return new Promise(resolve => {
+      if (pokemonRenderCpu[0]?.name === pokemonComputer[0]) {
+        setTimeout(() => resolve(true), 3000);
+      } else {
+        resolve(false);
+      }
+    });
+  }
+
+loadingCompleted().then((res) => {
+  if(res) setLoading(true);
+})
+
+/* each time the user hit buttons */
+function handleClick() {
+  setLoading(false);
+
+}
+
+/* normal functions */
 
   function defineStatusGame(status) {
     setStatusGame(status);
@@ -19,7 +40,6 @@ export function PokemonBattle() {
     const pokemonCpu = newPokemon.find((e) => e.owner === "cpu");
     pokemonCpu &&setPokemonRenderCpu([pokemonCpu])
 
-/* ============================================= */
 const pokemonUser = newPokemon.find((e) => e.owner === "user");
 
 pokemonUser && setPokemonRender((p) => {
@@ -33,9 +53,7 @@ pokemonUser && setPokemonRender((p) => {
 });
 
 }
-
-
-  function handlePokemonUser(name) {
+function handlePokemonUser(name) {
    
     setPokemonUser(name);
     
@@ -45,7 +63,8 @@ pokemonUser && setPokemonRender((p) => {
     setPokemonComputer([name, "cpu"]);
   }
   function nextPokemon() {
-    if (statusGame === "X") PokemonsRandorComputer(handlePokemonComputer, 905);
+
+    if (statusGame !== null) PokemonsRandorComputer(handlePokemonComputer, 905);
   }
 
   function handleCleanBoard() {
@@ -58,13 +77,19 @@ pokemonUser && setPokemonRender((p) => {
     setSquares(arr);
     setImageSquare(arr);
     setPokemonComputer(PokemonsRandorComputer(handlePokemonComputer, 905));
+    handleClick();
+    console.clear();
   }
   function hardResetGame() {
     window.location.reload();
   }
   return (
-    <div className="container">
+    <div className={`containerBattle  ${!loading&& `loading`}`}>
+      
+      
+      
       <ChoosePokemon
+      onClick={handleClick}
        status={statusGame}
         onPokemon={handlePokemonUser}
         listPokemonUser={pokemonRender}
@@ -72,7 +97,8 @@ pokemonUser && setPokemonRender((p) => {
         nextPokemon={nextPokemon}
         cleanBoard={handleCleanBoard}
       />
-      <PokemonComponent
+      <PokemonComponent 
+       
         pokemonName={pokemonUser}
         onGetPokemon={handlePokemonRender}
       />
@@ -87,31 +113,50 @@ pokemonUser && setPokemonRender((p) => {
         onPokemonRender={pokemonRender}
         onPokemonRenderCpu={pokemonRenderCpu}
       />
-      <CleanBoard
+      <CleanBoard 
+        onClick={handleClick}
         cleanBoard={handleCleanBoard}
         status={statusGame}
         nextPokemon={nextPokemon}
       />
-      <PokemonInput
+    
+      
+      <PokemonInput 
+      status={statusGame}
+      square={square}
+       onLoading={handleClick}
         onPokemon={handlePokemonComputer}
         cleanBoard={handleCleanBoard}
       />
-
-      <PokemonComponent
+  
+      <PokemonComponent 
         reset={resetGame}
         pokemonName={pokemonComputer}
         onGetPokemon={handlePokemonRender}
       />
-      <HardReset onHardReset={hardResetGame} />
+      <Trainer pokemonRenderCpu={pokemonRenderCpu} />
+      <HardReset onHardReset={hardResetGame}  />
     </div>
   );
 }
 
+
+function Trainer ({pokemonRenderCpu}) {
+  const avatar = pokemonRenderCpu[0]?.trainerCpuPicture;
+  const name  = pokemonRenderCpu[0]?.trainerCpu;
+ const location = pokemonRenderCpu[0]?.trainerCpuLocation;
+  return (
+    <div>
+      <img src={avatar} alt={name}></img>
+      <p>Trainer: {name} </p>
+      <p>Location: {location}</p>
+    </div>
+  )
+}
 /* get pokemon from the input field */
-function PokemonInput({ onPokemon, cleanBoard }) {
+function PokemonInput({ onPokemon, cleanBoard,status,square }) {
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
-
   function handlePokemon(e) {
     e.preventDefault();
     const regex = /^[a-zA-Z]{3,10}$/;
@@ -119,31 +164,37 @@ function PokemonInput({ onPokemon, cleanBoard }) {
       onPokemon(input.toLocaleLowerCase());
       setError(false);
       setInput("");
-      cleanBoard();
+      cleanBoard();       
     } else {
       setError(true);
       setInput("");
+      
+     
     }
+   
   }
 
   return (
     <div>
+      {square.every((el)=>el===null) || status !== null?
+      <>
       <form onSubmit={handlePokemon}>
+        <p>Search for a Pokemon</p>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         ></input>
       </form>
-      {error ? <p>Please type your pockemon again</p> : ""}
+    {error ? <p>Please type your pockemon again</p> : ""}
+    </>:""}
     </div>
   );
 }
 /* ======================================================= */
 /* user's Pokemon */
-function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,status,pokemonComputer}) {
+function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,status,pokemonComputer,onClick}) {
  
-  function printPokemonCard(name) {}
  
 
   function catchPokemon(e){   
@@ -151,6 +202,8 @@ function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,statu
     onPokemon([e.target.value,"user"]);
     cleanBoard();
     nextPokemon();
+    onClick(true);
+   
   }
 
   function clickPokemon(e) {
@@ -162,9 +215,7 @@ function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,statu
 
   return (
     <div>
-       {status === "X" && <> < button onClick={catchPokemon} value={pokemonComputer[0]}>catch your new pokemon {pokemonComputer[0]}</button>
-    
-      < button onClick={()=>printPokemonCard(pokemonComputer[0])} value={pokemonComputer[0]}>Print your New Pokemon {pokemonComputer[0]}</button></>}
+       {status === "X" && < button onClick={catchPokemon} value={pokemonComputer[0]}>catch your new pokemon {pokemonComputer[0]}</button>}
     <div>
       {listPokemonUser.length > 0 &&
         listPokemonUser.map((el) => (
@@ -179,22 +230,43 @@ function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,statu
   );
 }
 
-function CleanBoard({ cleanBoard, status, nextPokemon }) {
-  
+function CleanBoard({ cleanBoard, status, nextPokemon,onClick }) {
 
-  
-  function nextPokemonComputer() {
+  function cleanTheBoard() {
+    cleanBoard();
+    onClick(true);
+  }
+
+  function nextPokemonComputerAndClean() {
     cleanBoard();
     nextPokemon();
+    onClick(true);
+  
   }
   return (
     <>
-      {status !== null && (
-        <button onClick={() => nextPokemonComputer()}>
-          {status !== "X" ? `Clean the Board` : `Next Oponent`}
+      {status === "X" && (
+        <button onClick={() => nextPokemonComputerAndClean()}>
+         Next Oponent
         </button>
+        
       )}
-    </>
+         {status === "O" && (
+        <>
+        <button onClick={() => nextPokemonComputerAndClean()}>next Pokemon</button>
+        <button onClick={()=>cleanTheBoard()}>
+          {`Clean the Board`}
+        </button>
+        </>
+      )}
+       {status === false && (
+        <button onClick={() => cleanTheBoard()}>
+         Draw try Again
+        </button>
+        
+      )}
+      
+  </>
   );
 }
 
@@ -215,3 +287,4 @@ function HardReset({ onHardReset }) {
     </>
   );
 }
+

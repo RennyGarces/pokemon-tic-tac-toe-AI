@@ -27,6 +27,9 @@ export async function GetPokemonsName(randomName) {
   }
 }
 
+
+
+
 function Timeout(sec) {
   return new Promise((_, reject) => {
     setTimeout(() => {

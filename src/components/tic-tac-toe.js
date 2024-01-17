@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { calculateWinner } from "./calculateWinner";
 import { minimax } from "./minimax";
+import pokemonOpen from "../images/open-pokeball.png";
 
 function Square({ value, onSquareClick }) {
   return (
@@ -55,19 +56,19 @@ function Board({
 
 */
 
-if(computation  < 20){
+if(computation  < 10){
   level = 0; 
   Difficulty = "Easy"
 };
-if(computation > 30 && computation < 70){
+if(computation > 10 && computation < 50){
   level = 3;
   Difficulty="Medium";
 };
-if(computation > 70 && computation < 100){
+if(computation > 50 && computation < 90){
   level = 6;
 Difficulty="Difficult";
 };
-if(computation > 100){
+if(computation > 90){
   level = 9;
   Difficulty="Very fullDifficult";
 };
@@ -166,7 +167,7 @@ if(computation > 100){
           <img src={computer?.images?.front_shiny} alt="pokemon" />
         ) : (
           <div>
-            <img src="images/open-pokeball.png" alt="pokemon" />
+            <img src={pokemonOpen} alt="pokemon" />
             <p>Pokeball is empty!</p>
           </div>
         )}

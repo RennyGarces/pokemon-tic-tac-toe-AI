@@ -26,9 +26,9 @@ export function PokemonComponent({ pokemonName, onGetPokemon, reset }) {
               type: data.types,
               order: data.order,
               owner: pokemonName[1],
-              trainerCpu: trainerCpu.name,
-              trainerCpuLocation: trainerCpu.location,
-              trainerCpuPicture: trainerCpu.picture,
+              trainer: trainerCpu.name,
+              trainerLocation: trainerCpu.location,
+              trainerPicture: trainerCpu.picture,
             },
           ];
 

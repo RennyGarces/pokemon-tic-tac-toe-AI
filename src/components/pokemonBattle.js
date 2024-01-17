@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { PokemonComponent, PokemonsRandorComputer } from "./controler";
 import Tictactoe from "./tic-tac-toe";
-export function PokemonBattle() {
-  const [pokemonUser, setPokemonUser] = useState(["pikachu", "user"]);
-  const [pokemonComputer, setPokemonComputer] = useState(["charmander", "cpu"]);
+import ashImage from '../images/ash.png';
+import mystyImage from '../images/mysty.jpg';
+
+export function PokemonBattle({userAvatar}) {
+  const [pokemonUser, setPokemonUser] = useState(userAvatar[0].trainerPicture=== ashImage?["pikachu", "user"]: ["squirtle", "user"]);
+  const [pokemonComputer, setPokemonComputer] = useState(userAvatar[0].trainerPicture=== ashImage?["charmander", "cpu"]:[ "bulbasaur", "cpu"]);
   const [pokemonRender, setPokemonRender] = useState([]);
   const [pokemonRenderCpu, setPokemonRenderCpu] = useState([]);
   const [statusGame, setStatusGame] = useState(null);
   const [square, setSquares] = useState(Array(9).fill(null));
   const [imageSquare, setImageSquare] = useState(Array(9).fill(null));
  const [loading, setLoading] = useState(false);
+
+
   /* loading screen */
  let loadingCompleted = () => {
     return new Promise(resolve => {
       if (pokemonRenderCpu[0]?.name === pokemonComputer[0]) {
-        setTimeout(() => resolve(true), 3000);
+        setTimeout(() => resolve(true), 5000);
       } else {
         resolve(false);
       }
@@ -33,24 +38,28 @@ function handleClick() {
 
 /* normal functions */
 
-  function defineStatusGame(status) {
+function defineStatusGame(status) {
     setStatusGame(status);
-  }
-  function handlePokemonRender(newPokemon) {
+    if(status === "O" && pokemonRender.length > 1) {
+      const pokemonLooser = pokemonRender.filter((e) => e.name === pokemonUser[0]);
+      setPokemonRender(pokemonLooser);
+    }
+    }
+function handlePokemonRender(newPokemon) {
     const pokemonCpu = newPokemon.find((e) => e.owner === "cpu");
     pokemonCpu &&setPokemonRenderCpu([pokemonCpu])
 
-const pokemonUser = newPokemon.find((e) => e.owner === "user");
-
-pokemonUser && setPokemonRender((p) => {
-  const isPokemonUserAlreadyInArray = p.some(existingPokemon => existingPokemon.id === pokemonUser.id);
+const pokemonUserFilter = newPokemon.find((e) => e.owner === "user");
+pokemonUserFilter && setPokemonRender((p) => {
+  const isPokemonUserAlreadyInArray = p.some(existingPokemon => existingPokemon.id === pokemonUserFilter.id);
   
   if (!isPokemonUserAlreadyInArray) {
-    return [...p, pokemonUser];
+    return [...p, pokemonUserFilter];
   }
 
   return p;
 });
+
 
 }
 function handlePokemonUser(name) {
@@ -97,6 +106,7 @@ function handlePokemonUser(name) {
         nextPokemon={nextPokemon}
         cleanBoard={handleCleanBoard}
       />
+         <Trainer pokemonRenderCpu={userAvatar} />
       <PokemonComponent 
        
         pokemonName={pokemonUser}
@@ -142,14 +152,13 @@ function handlePokemonUser(name) {
 
 
 function Trainer ({pokemonRenderCpu}) {
-  const avatar = pokemonRenderCpu[0]?.trainerCpuPicture;
-  const name  = pokemonRenderCpu[0]?.trainerCpu;
- const location = pokemonRenderCpu[0]?.trainerCpuLocation;
+  const avatar = pokemonRenderCpu[0]?.trainerPicture;
+  const name  = pokemonRenderCpu[0]?.trainer;
   return (
     <div>
       <img src={avatar} alt={name}></img>
-      <p>Trainer: {name} </p>
-      <p>Location: {location}</p>
+      <p> {name} </p>
+ {pokemonRenderCpu[0]?.trainerLocation && <p>Location: {pokemonRenderCpu[0]?.trainerLocation}</p>}
     </div>
   )
 }
@@ -194,10 +203,8 @@ function PokemonInput({ onPokemon, cleanBoard,status,square }) {
 /* ======================================================= */
 /* user's Pokemon */
 function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,status,pokemonComputer,onClick}) {
- 
- 
 
-  function catchPokemon(e){   
+ function catchPokemon(e){   
     e.preventDefault();
     onPokemon([e.target.value,"user"]);
     cleanBoard();
@@ -260,10 +267,14 @@ function CleanBoard({ cleanBoard, status, nextPokemon,onClick }) {
         </>
       )}
        {status === false && (
+        <>
         <button onClick={() => cleanTheBoard()}>
          Draw try Again
         </button>
-        
+        <button onClick={() => nextPokemonComputerAndClean()}>
+         Next Oponent
+        </button>
+        </>
       )}
       
   </>
@@ -282,9 +293,11 @@ function HardReset({ onHardReset }) {
   };
 
   return (
-    <>
+    <div>
       <button onClick={handleReset}> Restart the Game</button>
-    </>
+      <a href="https://pokemondb.net/pokedex/national#gen-9"  target="_blank" >List of all porkemons</a> 
+  
+        </div>
   );
 }
 

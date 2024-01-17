@@ -16,6 +16,9 @@ body {
   
 
 }
+.hidden {
+display: none;
+}
 .loading{
   visibility: hidden;
 pointer-events: none;
@@ -23,7 +26,7 @@ pointer-events: none;
 .loading::after {
   content: "";
   visibility: visible;
-background-image: url(/public/images/Pokeball.svg);
+background-image: url(/src/images/Pokeball.svg);
 background-repeat: no-repeat;
 position: absolute;  
  border-radius: 50%;

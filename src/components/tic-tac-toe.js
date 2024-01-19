@@ -56,16 +56,16 @@ function Board({
 
 */
 
-if(computation  < 10){
-  level = 0; 
+if(computation  < 30){
+  level = 0.1; 
   Difficulty = "Easy"
 };
-if(computation > 10 && computation < 50){
-  level = 3;
+if(computation > 30 && computation < 60){
+  level = 2;
   Difficulty="Medium";
 };
-if(computation > 50 && computation < 90){
-  level = 6;
+if(computation > 60 && computation < 90){
+  level = 4;
 Difficulty="Difficult";
 };
 if(computation > 90){
@@ -73,12 +73,10 @@ if(computation > 90){
   Difficulty="Very fullDifficult";
 };
 
-
+  
   /* ====================functions =============================== */
 
   function handleClick(i) {
-
-
     if (square[i] || calculateWinner(square) || !computer) return;
     const nexSquares = square.slice();
     const nexImageSquare = imageSquare.slice();
@@ -87,7 +85,7 @@ if(computation > 90){
     nexImageSquare[i] = user?.images?.back_default ? (
       <img key={i} src={user?.images?.back_default} alt="pokemon" />
     ) : (
-      imageFrontUser
+      <img key={i} src={user?.images?.front_default} alt="pokemon" />
     );
     setSquares(nexSquares);
     setImageSquare(nexImageSquare);
@@ -113,10 +111,12 @@ if(computation > 90){
 
     if (move !== undefined) {
       nexSquares[move] = "O"; 
+      console.log(move,i)
       nexImageSquare[move] = computer?.images?.back_default ? (
         <img key={move} src={computer?.images?.back_default} alt="pokemon" />
       ) : (
-        imageFrontComp
+        <img key={move} src={computer?.images?.front_default} alt="pokemon" />
+      
       );
     }
 
@@ -129,6 +129,7 @@ if(computation > 90){
   /* ===================render data web site===================== */
 
   let winner = calculateWinner(square);
+ 
   useEffect(() => {
     onStatus(winner);
   }, [winner, onStatus]);
@@ -137,18 +138,15 @@ if(computation > 90){
   if (winner) {
     status =
       winner === "X" ? (
-        <>
+        <div>
           <span>{user?.name ? user.name : "loading"} You are the winner</span>
-          {imageFrontUser}
-          <span>take your new pockemon</span>
-          {imageFrontComp} <span>{computer?.name} 🤩</span>
-         
-        </>
+          {imageFrontUser}    
+        </div>
       ) : (
-        <>
+        <div>
           <span>Winner {nameOponent}</span>
           {imageFrontComp}
-        </>
+        </div>
       );
   } else if (winner === false) {
     status = (
@@ -192,11 +190,12 @@ if(computation > 90){
         }}
       >
         {square.map((el, i) => (
-          <Square
+         <Square  
             key={i}
             value={[imageSquare[i], square[i]]}
             onSquareClick={() => handleClick(i)}
-          /> 
+          />
+        
         ))}
       
       </div>

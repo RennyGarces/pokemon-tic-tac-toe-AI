@@ -2,19 +2,49 @@ import {PokemonBattle} from "./pokemonBattle";
 import {useRef, useState} from "react";
 import ashImage from '../images/ash.png';
 import mystyImage from '../images/mysty.jpg';
+import pokemonBall from '../images/Pokeball_icon.png';
+import brockImage from '../images/brock.png';
+import garyImage from '../images/gary.png';
+import serenaImage from '../images/serena.png';
+import mayImage from '../images/may.png';
+import professorImage from '../images/professor.png';
+import irisImage from '../images/iris.png';
 import musicBattle from '../music/Opening.mp3';
 import buttonCLick from '../music/buttonClick.mp3';
 import errorClick from '../music/error.wav';
 export default function App() {
 
   return (
-     <div>
+     <div className ="container-fluid" >
+      <NavBar/>
       <StartGame/>
-     
      </div>
   
   );
 }
+function NavBar (){
+  return (
+    <nav  className="navbar  navbar-expand-lg bg-body-tertiary">
+  <div className="container-fluid">
+  <a className="navbar-brand" href="#">
+      <img src={pokemonBall} alt="Logo" width="25" height="24" className="d-inline-block align-text-top"/>
+    </a>
+    <a className="navbar-brand" href="#">Pokemon Tictactoe AI</a>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div className="navbar-nav">
+        <a className="nav-link active" aria-current="page" href="#">Tutorial</a>
+        <a className="nav-link" href="#">AI features</a>
+        <a className="nav-link" href="#">Pokemon List</a>
+      </div>
+    </div>
+  </div>
+</nav>
+  );
+ }
+
 
 function StartGame (){
   const [userAvatar, setUserAvatar] = useState(null);
@@ -26,7 +56,7 @@ return(
  <div className={userAvatar?"hidden":""}>   
  <ImputFromUser onUserAvatar={setUserAvatar} />
  </div>
- {userAvatar &&<> <h1>Hi {userAvatar.trainer} wellcome to the Pokemon tic tac toe</h1>
+ {userAvatar &&<> 
  <audio controls src={musicBattle} autoPlay loop />
  <PokemonBattle userAvatar={userAvatar}/>
  </>}
@@ -37,6 +67,7 @@ return(
 function ImputFromUser({onUserAvatar}) {
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState(""); 
+  const [pokemon, setPokemon] = useState("");
   const [error, setError] = useState(false);
  function handleName(e){
   const regex = /^[a-zA-Z]{0,10}$/;
@@ -53,35 +84,56 @@ const button = useRef();
     setError(true);
     return};
     setError(false);
+    
    const userAvatar =[{
     trainer: name,
-    trainerPicture: avatar
+    trainerPicture: avatar,
+    pokemons: pokemon
   }]
   
   onUserAvatar(userAvatar);
   setName("");
   setAvatar("");
+  setPokemon("");
 
 }
   return (
     <div>
-      <h1>Choose your trainer</h1>
-     
       <form onSubmit={handleSubmit}>
       {!error &&<audio ref={button} src={buttonCLick} />}
       {error &&<audio ref={button} src={errorClick} />}
-        <label>
-          Name:
-          <input type="text" value={name} onChange={(e)=> handleName(e.target.value)} />
-        </label>
+       
          <div>
-          <img src={ashImage} value={avatar} onClick={(e)=> setAvatar(ashImage)}  alt="ASH"/>
-          <img src={mystyImage} value={avatar} onClick={(e)=> setAvatar(mystyImage)}  alt="MYSTY"/>
+         <h3>Choose your Avatar</h3>
+          <img className={`avatarImage ${ avatar === ashImage? `selected`:""}`} src={ashImage} value={avatar} onClick={(e)=> {setAvatar(ashImage);setPokemon(pokemons.ash)}}  alt="ASH"/>
+          <img className={`avatarImage ${ avatar === mystyImage? `selected`:""}`} src={mystyImage} value={avatar} onClick={(e)=> {setAvatar(mystyImage);setPokemon(pokemons.mysty)}}  alt="MYSTY"/>
+          <img className={`avatarImage ${ avatar === brockImage? `selected`:""}`} src={brockImage} onClick={(e)=>{ setAvatar(brockImage);setPokemon(pokemons.brock)}}  alt="BROCK"/>
+          <img className={`avatarImage ${ avatar === garyImage? `selected`:""}`} src={garyImage}  onClick={(e)=> {setAvatar(garyImage);setPokemon(pokemons.gary)}}  alt="GARY"/>
+          <img className={`avatarImage ${ avatar === serenaImage? `selected`:""}`} src={serenaImage} onClick={(e)=>{ setAvatar(serenaImage);setPokemon(pokemons.serena)}}  alt="SERENA"/>
+          <img className={`avatarImage ${ avatar === mayImage? `selected`:""}`} src={mayImage}  onClick={(e)=> {setAvatar(mayImage); setPokemon(pokemons.may)}}  alt="MAY"/>
+          <img className={`avatarImage ${ avatar === professorImage? `selected`:""}`} src={professorImage} onClick={(e)=>{ setAvatar(professorImage);setPokemon(pokemons.professor)}}  alt="PROFESSOR"/>
+        <img className={`avatarImage ${ avatar === irisImage? `selected`:""}`} src={irisImage} onClick={(e)=>{ setAvatar(irisImage);setPokemon(pokemons.iris)}}  alt="IRIS"/>
          </div>
-        <input type="submit" value="acept" />
+         <label>
+        <h3>Type your name</h3>
+          <input name="trainerName" className="form-control form-control-sm" type="text" value={name} onChange={(e)=> handleName(e.target.value)} />
+        </label>
+        <input type="submit" value="Enter"  className="btn btn-primary"/>
       </form>
       {error ? <p>Type your trainer name and select your Avatar</p>:""}
      
     </div>
   )
 }
+
+const pokemons = {
+  ash: [["pikachu", "user"], ["charmander", "cpu"]],
+  mysty: [["horsea", "user"], ["bulbasaur", "cpu"]],
+  brock: [["onix", "user"], ["geodude", "cpu"]],
+  gary: [["krabby", "user"], ["nidoqueen", "cpu"]],
+  serena: [["fennekin", "user"], ["froakie", "cpu"]],
+  may: [["torchic", "user"], ["mudkip", "cpu"]],
+  professor:[[ "bulbasaur", "user"], ["squirtle", "cpu"]],
+  iris: [["gible", "user"], ["drilbur", "cpu"]],
+
+};

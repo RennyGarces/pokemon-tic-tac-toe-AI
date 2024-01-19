@@ -3,38 +3,41 @@ import { PokemonComponent, PokemonsRandorComputer } from "./controler";
 import Tictactoe from "./tic-tac-toe";
 import ashImage from '../images/ash.png';
 import mystyImage from '../images/mysty.jpg';
-
+import brockImage from '../images/brock.png';
+import garyImage from '../images/gary.png';
+import serenaImage from '../images/serena.png';
+import mayImage from '../images/may.png';
+import professorImage from '../images/professor.png';
+import irisImage from '../images/iris.png';
+import { useEffect } from "react";
 export function PokemonBattle({userAvatar}) {
-  const [pokemonUser, setPokemonUser] = useState(userAvatar[0].trainerPicture=== ashImage?["pikachu", "user"]: ["squirtle", "user"]);
-  const [pokemonComputer, setPokemonComputer] = useState(userAvatar[0].trainerPicture=== ashImage?["charmander", "cpu"]:[ "bulbasaur", "cpu"]);
+  const [pokemonUser, setPokemonUser] = useState(userAvatar[0].pokemons[0]);
+  const [pokemonComputer, setPokemonComputer] = useState(userAvatar[0].pokemons[1]);
   const [pokemonRender, setPokemonRender] = useState([]);
   const [pokemonRenderCpu, setPokemonRenderCpu] = useState([]);
   const [statusGame, setStatusGame] = useState(null);
   const [square, setSquares] = useState(Array(9).fill(null));
   const [imageSquare, setImageSquare] = useState(Array(9).fill(null));
  const [loading, setLoading] = useState(false);
-
-
-  /* loading screen */
+ /* loading screen */
  let loadingCompleted = () => {
     return new Promise(resolve => {
-      if (pokemonRenderCpu[0]?.name === pokemonComputer[0]) {
-        setTimeout(() => resolve(true), 5000);
+      if (pokemonRenderCpu[0]?.name === pokemonComputer[0]&& !loading) {
+        setTimeout(() => resolve(true), 4000);
       } else {
         resolve(false);
       }
     });
   }
 
-loadingCompleted().then((res) => {
-  if(res) setLoading(true);
-})
-
 /* each time the user hit buttons */
 function handleClick() {
   setLoading(false);
-
+  
 }
+loadingCompleted().then((res) => {
+  if(res) setLoading(true);
+})
 
 /* normal functions */
 
@@ -78,6 +81,7 @@ function handlePokemonUser(name) {
 
   function handleCleanBoard() {
     const arr = Array(9).fill(null);
+    
     setSquares(arr);
     setImageSquare(arr);
   }
@@ -93,10 +97,12 @@ function handlePokemonUser(name) {
     window.location.reload();
   }
   return (
-    <div className={`containerBattle  ${!loading&& `loading`}`}>
-      
-      
-      
+    <div   >
+   <Trainer pokemonRenderCpu={userAvatar} />  
+      <PokemonComponent 
+       pokemonName={pokemonUser}
+        onGetPokemon={handlePokemonRender}
+      />
       <ChoosePokemon
       onClick={handleClick}
        status={statusGame}
@@ -106,24 +112,22 @@ function handlePokemonUser(name) {
         nextPokemon={nextPokemon}
         cleanBoard={handleCleanBoard}
       />
-         <Trainer pokemonRenderCpu={userAvatar} />
-      <PokemonComponent 
-       
-        pokemonName={pokemonUser}
-        onGetPokemon={handlePokemonRender}
-      />
+    
+      <div className={`containerBattle  ${!loading?`loading`:""}`} >
       <Tictactoe
         square={square}
         setSquares={setSquares}
         imageSquare={imageSquare}
-        setImageSquare={setImageSquare}
+        setImageSquare={setImageSquare }
         onStatus={defineStatusGame}
         nameOponent={pokemonComputer[0]}
         nameUser={pokemonUser[0]}
         onPokemonRender={pokemonRender}
         onPokemonRenderCpu={pokemonRenderCpu}
       />
+      </div>
       <CleanBoard 
+      loading={loading}
         onClick={handleClick}
         cleanBoard={handleCleanBoard}
         status={statusGame}
@@ -138,13 +142,13 @@ function handlePokemonUser(name) {
         onPokemon={handlePokemonComputer}
         cleanBoard={handleCleanBoard}
       />
-  
+     <Trainer pokemonRenderCpu={pokemonRenderCpu} />
       <PokemonComponent 
         reset={resetGame}
         pokemonName={pokemonComputer}
         onGetPokemon={handlePokemonRender}
       />
-      <Trainer pokemonRenderCpu={pokemonRenderCpu} />
+   
       <HardReset onHardReset={hardResetGame}  />
     </div>
   );
@@ -185,18 +189,19 @@ function PokemonInput({ onPokemon, cleanBoard,status,square }) {
 
   return (
     <div>
-      {square.every((el)=>el===null) || status !== null?
+      {square.every((el)=>el===null) || status !== null ? (
       <>
       <form onSubmit={handlePokemon}>
-        <p>Search for a Pokemon</p>
-        <input
+        <input name="pokemonInpu" className="form-control form-control-sm"
           type="text"
           value={input}
+          placeholder="Search fot other Pokemon"
           onChange={(e) => setInput(e.target.value)}
         ></input>
       </form>
     {error ? <p>Please type your pockemon again</p> : ""}
-    </>:""}
+    </>
+    ):""}  
     </div>
   );
 }
@@ -222,12 +227,12 @@ function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,statu
 
   return (
     <div>
-       {status === "X" && < button onClick={catchPokemon} value={pokemonComputer[0]}>catch your new pokemon {pokemonComputer[0]}</button>}
+       {status === "X" && < button onClick={catchPokemon} value={pokemonComputer[0]} className="btn btn-primary">catch your new pokemon {pokemonComputer[0]}</button>}
     <div>
       {listPokemonUser.length > 0 &&
         listPokemonUser.map((el) => (
           <div key={el.id}>
-            <button onClick={clickPokemon} value={el.name}>
+            <button onClick={clickPokemon} value={el.name} className="btn btn-primary" >
               {el.name}
             </button>
           </div>
@@ -237,8 +242,8 @@ function ChoosePokemon({nextPokemon,cleanBoard, onPokemon, listPokemonUser,statu
   );
 }
 
-function CleanBoard({ cleanBoard, status, nextPokemon,onClick }) {
-
+function CleanBoard({ cleanBoard, status, nextPokemon,onClick ,loading}) {
+  
   function cleanTheBoard() {
     cleanBoard();
     onClick(true);
@@ -253,25 +258,26 @@ function CleanBoard({ cleanBoard, status, nextPokemon,onClick }) {
   return (
     <>
       {status === "X" && (
-        <button onClick={() => nextPokemonComputerAndClean()}>
+        <button onClick={() => nextPokemonComputerAndClean()} className="btn btn-primary" >
          Next Oponent
         </button>
         
       )}
          {status === "O" && (
         <>
-        <button onClick={() => nextPokemonComputerAndClean()}>next Pokemon</button>
-        <button onClick={()=>cleanTheBoard()}>
+       {loading&& <button  onClick={() => nextPokemonComputerAndClean()} className="btn btn-primary" >next Pokemon</button>
+             }      
+  <button onClick={()=>cleanTheBoard()} className="btn btn-primary" >
           {`Clean the Board`}
         </button>
         </>
       )}
        {status === false && (
         <>
-        <button onClick={() => cleanTheBoard()}>
+        <button onClick={() => cleanTheBoard()} className="btn btn-primary" >
          Draw try Again
         </button>
-        <button onClick={() => nextPokemonComputerAndClean()}>
+        <button onClick={() => nextPokemonComputerAndClean()} className="btn btn-primary">
          Next Oponent
         </button>
         </>
@@ -294,8 +300,8 @@ function HardReset({ onHardReset }) {
 
   return (
     <div>
-      <button onClick={handleReset}> Restart the Game</button>
-      <a href="https://pokemondb.net/pokedex/national#gen-9"  target="_blank" >List of all porkemons</a> 
+      <button onClick={handleReset} className="btn btn-primary" > Restart the Game</button>
+      <a href="https://pokemondb.net/pokedex/national#gen-9" rel="noreferrer" target="_blank" >List of all porkemons</a> 
   
         </div>
   );

@@ -18,7 +18,6 @@ export function calculateWinner(squares) {
   }
 
   const lines = createWinningLines(size);
-
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
     let firstSquare = squares[line[0]];
@@ -26,6 +25,7 @@ export function calculateWinner(squares) {
       firstSquare && line.every((index) => squares[index] === firstSquare);
     if (winner) {
       return firstSquare;
+  
     }
   }
   const full = squares.every((el) => el != null);

@@ -16,6 +16,8 @@ body {
   
 
 }
+
+/* loading */
 .hidden {
 display: none;
 }
@@ -39,10 +41,25 @@ position: absolute;
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+/* =============== */
 
-
-
-
+.avatarImage {
+ margin: 10px 10px;
+  width: 150px;
+  height: 150px;
+  object-fit:cover;
+}
+.avatarImage:hover {
+  cursor: pointer;
+}
+.avatarImage:active {
+  transform: scale(0.9);
+}
+.selected {
+  filter: brightness(0.5);
+  border: 4px solid #f2404093;
+}
+/* =================== */
 .versus {
   display: flex;
   align-items: center;
@@ -57,11 +74,11 @@ position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: hsl(0, 0%, 56%);
-  border: 1px solid #000000;
+  background: hsl(0, 0%, 63%);
+  border: 1px solid #0000005a;
   font-size: 0px;
-  height: 80px;
-  width: 100%;
+  height: 8rem;
+  width: 10rem;
 }
 
 .board-row:after {

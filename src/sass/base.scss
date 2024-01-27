@@ -1,0 +1,72 @@
+@use "pokemonBattle.scss" as *;
+@use "variables.scss" as *;
+@use "pokeSpinner.scss" as *;
+@use "cards.scss" as *;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  font-size: 16.5px;
+}
+body {
+  @extend .press-start;
+
+background-color: $primary-color;  
+@media only screen and (max-width: #{$size-medium}) {
+  background-color: rgb(172, 199, 146);
+  }  
+}
+.container_game{
+background-image: url(/images/pokemon-logo.png);
+background-size: cover;
+background-repeat: no-repeat;
+background-position: start;
+background-size: 25rem;
+@media only screen and (max-width: #{$size-large}) {
+  background-size: 20rem;
+ 
+ }
+ @media only screen and (max-width: #{$size-medium}) {
+background-image: url(/images/pokemon_green.jpg);
+background-size: 100%;
+background-repeat: no-repeat;
+background-position: start;
+}  
+
+  
+}
+.audio{
+z-index: 100;
+top:0;
+right:0;
+position: absolute;
+background-image: url(/images/pokeball-Transparent.png);
+background-size: cover;
+background-repeat: no-repeat;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: 130px;
+height: 120px;
+@media only screen and (max-width: #{$size-medium}) {
+top: 5%;
+right: 51%;
+transform: translate(50%, 50%);
+  }  
+}
+
+audio{
+
+  width: 100px;
+  background-color: rgba(0, 0, 0, 0);
+}
+audio::-webkit-media-controls-panel {
+  background-color: rgba(31, 31, 31, 0);
+}
+audio::-webkit-media-controls-play-button {
+  background-color: $primary-color;
+  border-radius: 50%;
+}

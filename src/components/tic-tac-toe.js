@@ -48,32 +48,24 @@ function Board({
   Math.round(user?.experience / computer?.experience);
 
   /* =====================level CPU================================ */  
-  /* 
-- `Easy`: ` 0` .
-- `Medium`: `3` - 
-- `Difficult`: ` 6` - 
-- `Very fullDifficult`: `9` 
-
-*/
 
 if(computation  < 30){
-  level = 0.1; 
+  level = 0; 
   Difficulty = "Easy"
 };
 if(computation > 30 && computation < 60){
-  level = 2;
+  level = 1;
   Difficulty="Medium";
 };
 if(computation > 60 && computation < 90){
-  level = 4;
+  level = 3;
 Difficulty="Difficult";
 };
 if(computation > 90){
   level = 9;
-  Difficulty="Very fullDifficult";
+  Difficulty="fullDifficult";
 };
 
-  
   /* ====================functions =============================== */
 
   function handleClick(i) {
@@ -111,7 +103,6 @@ if(computation > 90){
 
     if (move !== undefined) {
       nexSquares[move] = "O"; 
-      console.log(move,i)
       nexImageSquare[move] = computer?.images?.back_default ? (
         <img key={move} src={computer?.images?.back_default} alt="pokemon" />
       ) : (
@@ -138,53 +129,60 @@ if(computation > 90){
   if (winner) {
     status =
       winner === "X" ? (
-        <div>
-          <span>{user?.name ? user.name : "loading"} You are the winner</span>
-          {imageFrontUser}    
+        <div className="versus">
+          <div className="versus_players">
+           {imageFrontUser}
+           </div>
+           <span>Winner {user?.name ? user.name : "loading"}</span>
         </div>
       ) : (
-        <div>
-          <span>Winner {nameOponent}</span>
-          {imageFrontComp}
+        
+        <div className="versus">
+        <div className="versus_players">
+        {imageFrontComp}
         </div>
+        <span>Winner {nameOponent}</span>
+      </div>
       );
   } else if (winner === false) {
     status = (
-      <div>
-        {imageFrontComp} VERSUS {imageFrontUser}
-        <p>draw</p>
+      <div className="versus">
+       <div className="versus_players">
+        {imageFrontComp}{imageFrontUser}
+        </div>
+        <span>draw</span>
       </div>
     );
   } else {
     status = (
       <div className="versus">
-        <span>{user?.name ? user.name : ""}</span>
-        <img src={user?.images?.front_shiny} alt="pokemon" />
-        <span>VS</span>
-        {computer?.images ? (
+        <div className="versus_players">
+        <img  src={user?.images?.front_shiny} alt="pokemon" />
+        <p>Level {user?.experience}</p>
+        </div>
+        {computer?.images ? 
+        (
+          <div className="versus_players">
           <img src={computer?.images?.front_shiny} alt="pokemon" />
+        <p>Level {computer?.experience}</p>
+        </div>
         ) : (
-          <div>
+          <div className="versus">
+           <div className="versus_players"> 
             <img src={pokemonOpen} alt="pokemon" />
             <p>Pokeball is empty!</p>
+            </div>
           </div>
         )}
-        <span>{computer?.name ? computer.name : ""}</span>
+         {computer ? <span>{user?.name ? user.name : ""} VS {computer?.name ? computer.name : ""} {Difficulty} level</span>:""}
       </div>
     );
   }
-/*   - `Easy`: ` 0` .
-  - `Medium`: `3` - 
-  - `Difficult`: ` 6` - 
-  - `Very fullDifficult`: `9` 
-   */
-
   return (
     <>
-      <>{status}</>
-      <> Difficulty: {Difficulty} {level >3 &&"take care Pokemon is Strong"} </>
-      <div
-        className="board-row"
+         {status}
+       <div
+        className="board"
         style={{
           gridTemplateColumns: `repeat(${Math.ceil(square.length / 4)}, 1fr)`,
         }}
@@ -197,9 +195,10 @@ if(computation > 90){
           />
         
         ))}
-      
-      </div>
-    </>
+
+  </div>
+  </>
+  
   );
 }
 
@@ -216,7 +215,7 @@ export default function Game({
 
 }) {
   return (
-      <div >
+      <div className="tictactoe">
         <Board
           onPokemonRenderCpu={onPokemonRenderCpu}
           square={square}

@@ -1,0 +1,143 @@
+@use "variables.scss" as *;
+
+.avatarImage {
+    margin: 10px 10px;
+     width: 150px;
+     height: 150px;
+     object-fit:cover;
+   
+   &:hover {
+     cursor: pointer;
+   }
+   &:active {
+     transform: scale(0.9);
+   }
+}
+.selected {
+    filter: brightness(0.5);
+    border: 1px solid $primary-color;
+  }
+
+.cards{
+  @media only screen and (max-width: #{$size-medium}) {
+    grid-area: auto;
+    }
+}
+
+
+  .cards_battle_avatar{
+    text-shadow: 1px 1px $secondary-color;  
+    grid-area: header;
+    grid-row: 1/2;
+    background-image: url(/images/background_user.jpg);
+    padding: 0.4rem;
+    margin: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    text-align: center;
+    width: 70%;
+    border-radius: 5px;
+    gap:0.5rem;
+    font-weight: 800;
+    font-size: 12px;
+    box-shadow: 0 0 5px 3px $primary-color;
+ 
+    img{
+        box-shadow: 0 0 5px 3px $transparent;
+         border-radius: 10%;
+        width: 25%;
+    }
+    @media only screen and (max-width: #{$size-large}) {
+      width: 60%;
+      font-size: 10px;
+     }
+
+     @media only screen and (max-width: #{$size-medium}) {
+      width: 100%;
+      font-size: 0.8rem;
+     }
+     @media only screen and (max-width: #{$size-small}) {
+      width: 100%;
+      font-size: 0.5rem;
+     }
+    }
+  
+.card{
+  grid-area: column2;
+    border-radius: 10px;
+    background-image: url(/images/background.jpg);
+    line-height: 30px;
+    padding: 0.5rem;
+     display:grid; 
+     gap: 0.6rem;
+    font-size: 10px;
+    width: 100%;
+    height: inherit;
+   &_img{
+    display: flex;
+    align-items: center;
+    @include players_card;
+    box-shadow: 0 0 5px 3px $transparent;
+    img{
+        width: 35%;
+        
+        
+    }
+   }
+   div{
+    border-radius: 10px;
+    text-transform: uppercase;
+    padding: 1rem;
+    box-shadow: 0 0 3px 1px white;
+    border: 1px solid $secondary-color;
+   }
+   @media only screen and (max-width: #{$size-large}) {
+    width: 105%;
+    font-size: 7px;
+   }
+   @media only screen and (max-width: #{$size-medium}) {
+    font-size: 0.8rem;
+    padding: 0%;
+   }
+   @media only screen and (max-width: #{$size-small}) {
+    width: 100%;
+    font-size: 0.4rem;
+   }
+}
+
+/* pokemons list */
+.catch_pokemon{
+z-index: 1;
+position: absolute;
+@include button_card;
+background-color: $secondary-color;
+width: 30rem;
+bottom: 0%;
+left: 0%;
+text-shadow: 1px 3px $primary-color;
+letter-spacing: 3px;
+@media only screen and (max-width: #{$size-medium}) {
+  text-shadow: none;
+  width: inherit;
+  height: 8rem;
+  font-size: 12px;
+  top: -60%;
+  left:0%;
+  transform: translate(60%, 0%);
+  line-height: 2;
+   }  
+   @media only screen and (max-width: #{$size-small}) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translate(70%, 0%);
+    width: 100%;
+    padding: 1.6rem;
+    letter-spacing: 3px;
+    font-size: 8px;
+    line-height: 3;
+   }
+}

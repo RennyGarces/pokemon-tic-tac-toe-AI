@@ -47,35 +47,39 @@ export function PokemonComponent({ pokemonName, onGetPokemon, reset }) {
   }, [pokemonName]);
 
   return (
-    <div>
-      {error|| pokemon.length < 1 ?<div> 
+    <>
+      {error|| pokemon.length < 1 ?<div className="principal_buttons_error"> 
         <button onClick={() => reset()}>RESET GAME</button>
         <p> `Pokemon does not exist`</p>
         </div>:"" }
       {pokemon.map((el) => (
-        <div key={el.id}>
+        <div key={el.id} className="card">
+          <div className="card_img">
           <img src={el.images.front_default} alt={el.name}></img>
-
-          <h3> Name : {el.name}</h3>
-          <ul>
-            <h3>Power:</h3>
+          <p> {el.name}</p>
+          </div>
+          <div>
+            <h3>POWER</h3>
             {el.abilities.map((ability, index) => {
-              return <li key={index}> {ability.ability.name} </li>;
+              return <p key={index}> {ability.ability.name} </p>;
             })}
-          </ul>
-          <h3>Level : {el.experience}</h3>
+          </div>
+          <div>
+          <h3>LEVEL {el.experience? el.experience:`like God`}</h3>
           <h3>
-            height : {el.height} Weight: {el.weight}
+            HEIGHT {el.height} WEIGHT {el.weight}
           </h3>
-          <h3>Order : {el.order}</h3>
-          <ul>
+          <h3>ORDER {el.order}</h3>
+          </div>
+          <div>
+            <h3>TYPE</h3>
             {el.type.map((type, index) => (
-              <li key={index}>{type.type.name}</li>
+              <p key={index}>{type.type.name}</p>
             ))}
-          </ul>
+          </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }
 

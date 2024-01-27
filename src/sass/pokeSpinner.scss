@@ -1,0 +1,32 @@
+@use "variables.scss" as *;
+.hidden {
+  display: none;
+}
+ .loading{
+    pointer-events: none;
+ }
+    .loading::after {
+      content: "";
+     visibility: visible;
+    background-image: url(/images/Pokeball.svg);
+    background-repeat: no-repeat;
+    position: absolute; 
+    top: 40%;
+    right: 45%;
+     border-radius: 50%;
+     width: 140px;
+     height: 140px;
+      animation: spin 1s linear infinite;
+      @media only screen and (max-width: #{$size-medium}) {
+      top:20%;      
+
+      
+     }
+      
+  }
+    
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+////////////////////////////////////
+$primary-color: #c03939;
+$secondary-color: #ebe48ecb;
+$dark-color:#1b1a1a8e;
+$transparent : rgba(59, 57, 57, 0.452);
+/////////////////////////////////////////
+$size-large: 78.15em; // 1250px
+$size-medium: 62.25em; // 980px
+$size-small: 37.5em; // 600px
+$size-smallest: 31.25em; // 500px
+/////////////////////////////////////////
+.press-start  {
+ 
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+@mixin  miniCard {
+  text-shadow: 1px 1px $primary-color;
+  background-image: url(/images/background.jpg);
+    border: 2px solid $primary-color;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0px $transparent;
+  
+}
+
+@mixin players_card{
+  text-shadow: 1px 1px $secondary-color;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 2px 1px $transparent;
+  background-color: $primary-color;
+  border-left: 0.2px solid $dark-color;
+  border-radius: 3px;
+  padding: 0.3rem;
+  font-weight: 800;
+  &:active {
+    transform: translate(10%,-10%) scale(1.1);
+  }
+  &:hover{
+    cursor: pointer;
+   
+      }
+}
+
+@mixin button_card{
+  border-radius: 10px;
+border: 1px solid $secondary-color;
+background-image: url(/images/open-pokeball.png);
+background-repeat:no-repeat;
+background-position: center;
+background-size: 5rem;
+text-align: center;
+text-transform: uppercase;
+font-size: 1rem;
+font-weight: 800;
+font-family: inherit;
+padding: 2rem;
+text-shadow: 2px 0px #ffffff88;
+transition: all 0.3s ease-in-out;
+&:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+}
+

@@ -9,41 +9,21 @@ import serenaImage from '../images/serena.png';
 import mayImage from '../images/may.png';
 import professorImage from '../images/professor.png';
 import irisImage from '../images/iris.png';
+import gohImage from '../images/goh.jpg';
 import musicBattle from '../music/Opening.mp3';
 import buttonCLick from '../music/buttonClick.mp3';
 import errorClick from '../music/error.wav';
+
 export default function App() {
 
   return (
-     <div className ="container-fluid" >
-      <NavBar/>
+     <div >   
       <StartGame/>
      </div>
   
   );
 }
-function NavBar (){
-  return (
-    <nav  className="navbar  navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-  <a className="navbar-brand" href="#">
-      <img src={pokemonBall} alt="Logo" width="25" height="24" className="d-inline-block align-text-top"/>
-    </a>
-    <a className="navbar-brand" href="#">Pokemon Tictactoe AI</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div className="navbar-nav">
-        <a className="nav-link active" aria-current="page" href="#">Tutorial</a>
-        <a className="nav-link" href="#">AI features</a>
-        <a className="nav-link" href="#">Pokemon List</a>
-      </div>
-    </div>
-  </div>
-</nav>
-  );
- }
+
 
 
 function StartGame (){
@@ -51,16 +31,17 @@ function StartGame (){
  
 
 return(
-  <div>
-    
+  <>  
  <div className={userAvatar?"hidden":""}>   
  <ImputFromUser onUserAvatar={setUserAvatar} />
  </div>
- {userAvatar &&<> 
+ {userAvatar &&<>
+ <div className="audio"> 
  <audio controls src={musicBattle} autoPlay loop />
+ </div>
  <PokemonBattle userAvatar={userAvatar}/>
  </>}
-</div>
+</>
 )
 }
 
@@ -99,10 +80,10 @@ const button = useRef();
 }
   return (
     <div>
-      <form onSubmit={handleSubmit}>
       {!error &&<audio ref={button} src={buttonCLick} />}
       {error &&<audio ref={button} src={errorClick} />}
-       
+      
+      <form onSubmit={handleSubmit}>    
          <div>
          <h3>Choose your Avatar</h3>
           <img className={`avatarImage ${ avatar === ashImage? `selected`:""}`} src={ashImage} value={avatar} onClick={(e)=> {setAvatar(ashImage);setPokemon(pokemons.ash)}}  alt="ASH"/>
@@ -113,12 +94,13 @@ const button = useRef();
           <img className={`avatarImage ${ avatar === mayImage? `selected`:""}`} src={mayImage}  onClick={(e)=> {setAvatar(mayImage); setPokemon(pokemons.may)}}  alt="MAY"/>
           <img className={`avatarImage ${ avatar === professorImage? `selected`:""}`} src={professorImage} onClick={(e)=>{ setAvatar(professorImage);setPokemon(pokemons.professor)}}  alt="PROFESSOR"/>
         <img className={`avatarImage ${ avatar === irisImage? `selected`:""}`} src={irisImage} onClick={(e)=>{ setAvatar(irisImage);setPokemon(pokemons.iris)}}  alt="IRIS"/>
+        <img className={`avatarImage ${ avatar === gohImage? `selected`:""}`} src={gohImage} onClick={(e)=>{ setAvatar(gohImage);setPokemon(pokemons.goh)}}  alt="GOH"/>
          </div>
          <label>
         <h3>Type your name</h3>
-          <input name="trainerName" className="form-control form-control-sm" type="text" value={name} onChange={(e)=> handleName(e.target.value)} />
+          <input name="trainerName" type="text" value={name} onChange={(e)=> handleName(e.target.value)} />
         </label>
-        <input type="submit" value="Enter"  className="btn btn-primary"/>
+        <input type="submit" value="Enter" />
       </form>
       {error ? <p>Type your trainer name and select your Avatar</p>:""}
      
@@ -135,5 +117,6 @@ const pokemons = {
   may: [["torchic", "user"], ["mudkip", "cpu"]],
   professor:[[ "bulbasaur", "user"], ["squirtle", "cpu"]],
   iris: [["gible", "user"], ["drilbur", "cpu"]],
+  goh: [["cinderace", "user"], ["sobble", "cpu"]]
 
 };

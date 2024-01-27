@@ -1,0 +1,332 @@
+@use "variables.scss" as *;
+
+
+.principal_buttons{  
+  position: relative;
+    padding: 1rem;
+    height: 18rem;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: end;
+    gap:1rem;
+    @media only screen and (max-width: #{$size-medium}) {
+    align-items: center;
+    height: 25rem;
+     }  
+    &_error{ 
+      position: absolute;
+      right: 50%;
+      top: 40%;
+      display: flex;
+      flex-direction: column;
+      transform: translate(50%, -50%);
+      button{
+        @include button_card;
+        background-color: $primary-color;
+        background-size: 3rem;
+        padding: 2rem;
+        font-size: 1.5rem;
+        @media only screen and (max-width: #{$size-medium}) {
+         padding: 10px;
+         font-size: 15px;
+           }  
+      }
+      p{
+        text-align: center;
+        font-size: 15px;
+        @media only screen and (max-width: #{$size-medium}) {
+          font-size: 12px;
+           }  
+      }
+    }
+    
+    &_restart{
+      button{   
+      @include button_card;
+      background-color:$primary-color;
+      background-size: 2rem;
+      padding: 12px;
+      font-size: 9px;
+      }
+      
+    
+    }
+    &_dinamic{
+     button{
+      @include button_card;
+      background-size: 2rem;
+      background-color: $secondary-color;
+      padding: 15px;
+      font-size: 9px;
+      @media only screen and (max-width: #{$size-large}) {
+        font-size: 10px;
+        padding: 12px;
+       }  
+    }
+      
+    }
+
+    
+}
+.pokemon_input{
+  
+  @include miniCard;
+
+  input{
+ 
+    background-color: $secondary-color;  
+    width: 20rem;
+    height: 100%;
+    padding: 15px;
+    font-size: 10px;
+    font-family: inherit;
+    text-align: start;
+    border: 1px solid $secondary-color;
+    &:focus{
+      outline: none;
+    }
+    @media only screen and (max-width: #{$size-large}) {
+    width: 15rem;
+    font-size: 9px;
+   }
+  }
+}
+
+
+
+.containerBattle { 
+    position: relative;
+    background-image: url(/images/arena.jpg);
+    border-radius: 10px;
+    box-shadow: 0 0 5px 4px $transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:cover;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+    gap: 3rem;
+    margin: 1rem; 
+    padding: 1rem;
+    
+    @media only screen and (max-width: #{$size-medium}) {
+      top: -10%;
+      grid-template-columns: 1fr 1fr; 
+      grid-template-rows: auto;
+      background-image: url(/images/arena-mobile.webp);
+    
+    }
+  
+}
+
+.tictactoe{
+    
+  @media only screen and (max-width: #{$size-medium}) {
+  grid-area: 1/span 2;
+  }
+}
+
+.versus {
+     z-index: 1;
+    @include miniCard;
+    padding: 0.4rem;
+    position: absolute;
+    display: flex;
+    top: -30% ; 
+    right: 50%;
+    transform: translate(50%, 50%);
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   @media only screen and (max-width: #{$size-medium}) {
+    top: -3%;
+   
+     }  
+   &_players{
+    @include players_card;
+   }
+   img{
+      background-image: url(/images/open-pokeball.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size:cover;
+        width: 7rem;
+        height: 7rem;
+        @media only screen and (max-width: #{$size-large}) {
+         width: 5rem;
+         height: 5rem;          
+         }
+   }
+   span{
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 4px;
+    width: 25rem;
+    @include miniCard;
+    padding: 10px 5px;
+    position: absolute;
+    bottom: -55%;
+    pointer-events: none;
+    @media only screen and (max-width: #{$size-large}) {
+      width: 20rem;
+      font-size: 15px;
+      bottom: -75%;
+     } 
+  
+  }
+  
+
+}
+.board{
+    display: grid;
+    padding-top: 5rem;
+     
+    &:after {
+        clear: both;
+        content: "";
+      }
+      @media only screen and (max-width: #{$size-medium}) {
+     margin: 7rem 1rem 20rem 1rem; 
+      }
+     @media only screen and (max-width: #{$size-small}) {
+     margin-top: 15rem;       
+    }
+    }
+   
+   .square {
+    background-image: url(/images/block.jpg);
+    background-size:cover;
+    background-position: end;
+     color: rgba(255, 255, 255, 0);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border: 3px solid $secondary-color;
+     box-shadow: 10px 10px 30px 12px $secondary-color;
+     font-size: 0px;
+     height: 10rem;
+     width: inherit;
+     img{
+        width: 80%;
+        height: 80%;
+        
+     }
+     @media only screen and (max-width: #{$size-large}) {
+      height: 7rem;
+   }
+   @media only screen and (max-width: #{$size-medium}) {
+
+    height: 12rem;
+   
+ }
+ @media only screen and (max-width: #{$size-small}) {
+
+  height: 7rem;
+ 
+}
+   
+     
+   }
+.user__column{
+  @media only screen and (max-width: #{$size-medium}) {
+    grid-area: auto;
+    display: flex;
+    flex-direction: column;
+    }
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr; 
+  grid-template-rows: auto; 
+  grid-template-areas: 
+    "header header"
+    "column1 column2";
+  
+}
+  
+   .pokemon_list{
+    position: absolute;
+    grid-area: column1;
+    overflow-x: hidden;
+    overflow-y: scroll; 
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr; 
+    grid-template-rows: auto;
+    &_item{ 
+    background-position: center;
+    background-repeat: no-repeat;
+     display: flex;
+ 
+    flex-direction: column;
+    align-items: center;
+    justify-self: start;
+    @media only screen and (max-width: #{$size-large}) {
+      background-size: 3rem;
+       }
+   
+    }
+    img{
+      width: 130%;
+     }
+    button{  img{
+      width: 100%;
+      height: 100%;
+      
+   }
+      text-shadow: 1px 1px $secondary-color;  
+      background-color: $secondary-color;
+      font-family: inherit;
+      font-size: 7px;
+      padding: 7px;
+     cursor: pointer;
+     border-radius: 3px;
+     @media only screen and (max-width: #{$size-large}) {
+      padding:3px;
+      font-size:7px;
+   }
+    }
+    @media only screen and (max-width: #{$size-medium}) {
+      top: -40%; 
+      height: 35%;
+     width: 200%;
+      display: flex;
+      gap: 10px;
+      overflow-x: scroll;
+      overflow-y: hidden; 
+    
+     &_item{
+      background-color:$transparent;
+      align-items: center;
+      justify-content: end;
+   }
+      
+   button{
+      font-size: 10px;
+      padding: 10px;
+      
+    }
+  }
+  
+  
+ }
+   
+   
+   ::-webkit-scrollbar {
+    width: 15px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px $primary-color;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 5px $primary-color;
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb {
+    background: #0000008f;
+  }

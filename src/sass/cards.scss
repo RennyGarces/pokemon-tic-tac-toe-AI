@@ -5,6 +5,8 @@
      width: 150px;
      height: 150px;
      object-fit:cover;
+     border:  9px solid black;
+     border-radius: 5px;
    
    &:hover {
      cursor: pointer;
@@ -59,7 +61,7 @@
       font-size: 0.8rem;
      }
      @media only screen and (max-width: #{$size-small}) {
-      width: 100%;
+      width: 90%;
       font-size: 0.5rem;
      }
     }
@@ -80,9 +82,13 @@
     align-items: center;
     @include players_card;
     box-shadow: 0 0 5px 3px $transparent;
+    @media only screen and (max-width: #{$size-small}) {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      }   
     img{
-        width: 35%;
-        
+        width: 40%;
         
     }
    }
@@ -103,7 +109,7 @@
    }
    @media only screen and (max-width: #{$size-small}) {
     width: 100%;
-    font-size: 0.4rem;
+    font-size: 0.5rem;
    }
 }
 

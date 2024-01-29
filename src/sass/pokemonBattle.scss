@@ -44,7 +44,7 @@
     &_restart{
       button{   
       @include button_card;
-      background-color:$primary-color;
+      background-color:yellow;
       background-size: 2rem;
       padding: 12px;
       font-size: 9px;
@@ -158,12 +158,12 @@
          }
    }
    span{
-    font-size: 1.1rem;
+    font-size: 0.7rem;
     text-align: center;
     letter-spacing: 4px;
     width: 25rem;
     @include miniCard;
-    padding: 10px 5px;
+    padding: 15px 15px;
     position: absolute;
     bottom: -55%;
     pointer-events: none;
@@ -298,6 +298,7 @@
       background-color:$transparent;
       align-items: center;
       justify-content: end;
+      border-radius: 10px;
    }
       
    button{

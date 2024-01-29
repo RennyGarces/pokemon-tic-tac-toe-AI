@@ -13,11 +13,12 @@ import gohImage from '../images/goh.jpg';
 import musicBattle from '../music/Opening.mp3';
 import buttonCLick from '../music/buttonClick.mp3';
 import errorClick from '../music/error.wav';
-
+import  Navbar from "./navBar"
 export default function App() {
 
   return (
-     <div >   
+     <div > 
+      <Navbar/> 
       <StartGame/>
      </div>
   
@@ -79,13 +80,13 @@ const button = useRef();
 
 }
   return (
-    <div>
+    <div className="users">
       {!error &&<audio ref={button} src={buttonCLick} />}
       {error &&<audio ref={button} src={errorClick} />}
       
-      <form onSubmit={handleSubmit}>    
-         <div>
-         <h3>Choose your Avatar</h3>
+      <form className="users_form" onSubmit={handleSubmit}>    
+       <h3>Choose your Avatar</h3>
+         <div className="users_avatars">
           <img className={`avatarImage ${ avatar === ashImage? `selected`:""}`} src={ashImage} value={avatar} onClick={(e)=> {setAvatar(ashImage);setPokemon(pokemons.ash)}}  alt="ASH"/>
           <img className={`avatarImage ${ avatar === mystyImage? `selected`:""}`} src={mystyImage} value={avatar} onClick={(e)=> {setAvatar(mystyImage);setPokemon(pokemons.mysty)}}  alt="MYSTY"/>
           <img className={`avatarImage ${ avatar === brockImage? `selected`:""}`} src={brockImage} onClick={(e)=>{ setAvatar(brockImage);setPokemon(pokemons.brock)}}  alt="BROCK"/>
@@ -93,16 +94,17 @@ const button = useRef();
           <img className={`avatarImage ${ avatar === serenaImage? `selected`:""}`} src={serenaImage} onClick={(e)=>{ setAvatar(serenaImage);setPokemon(pokemons.serena)}}  alt="SERENA"/>
           <img className={`avatarImage ${ avatar === mayImage? `selected`:""}`} src={mayImage}  onClick={(e)=> {setAvatar(mayImage); setPokemon(pokemons.may)}}  alt="MAY"/>
           <img className={`avatarImage ${ avatar === professorImage? `selected`:""}`} src={professorImage} onClick={(e)=>{ setAvatar(professorImage);setPokemon(pokemons.professor)}}  alt="PROFESSOR"/>
-        <img className={`avatarImage ${ avatar === irisImage? `selected`:""}`} src={irisImage} onClick={(e)=>{ setAvatar(irisImage);setPokemon(pokemons.iris)}}  alt="IRIS"/>
-        <img className={`avatarImage ${ avatar === gohImage? `selected`:""}`} src={gohImage} onClick={(e)=>{ setAvatar(gohImage);setPokemon(pokemons.goh)}}  alt="GOH"/>
-         </div>
+          <img className={`avatarImage ${ avatar === irisImage? `selected`:""}`} src={irisImage} onClick={(e)=>{ setAvatar(irisImage);setPokemon(pokemons.iris)}}  alt="IRIS"/>
+          <img className={`avatarImage ${ avatar === gohImage? `selected`:""}`} src={gohImage} onClick={(e)=>{ setAvatar(gohImage);setPokemon(pokemons.goh)}}  alt="GOH"/>
+        </div>
          <label>
-        <h3>Type your name</h3>
-          <input name="trainerName" type="text" value={name} onChange={(e)=> handleName(e.target.value)} />
+         <h3>Type your name</h3>
+          <input name="trainerName" className="users_input" type="text" value={name} onChange={(e)=> handleName(e.target.value)} />
+          <input className="users_button"type="submit" value="Enter" />
         </label>
-        <input type="submit" value="Enter" />
+        {error ? <p className="users_error">Avatar and name are required</p>:""}
       </form>
-      {error ? <p>Type your trainer name and select your Avatar</p>:""}
+     
      
     </div>
   )

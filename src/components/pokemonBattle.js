@@ -211,7 +211,7 @@ function PokemonInput({ onPokemon, cleanBoard,status,square }) {
       
           type="text"
           value={input}
-          placeholder="Search fot other Pokemon"
+          placeholder="Search for other Pokemon"
           onChange={(e) => setInput(e.target.value)}
         ></input>
       </form>

@@ -174,7 +174,7 @@ if(computation > 90){
             </div>
           </div>
         )}
-         {computer ? <span>{user?.name ? user.name : ""} VS {computer?.name ? computer.name : ""} {Difficulty} level</span>:""}
+         {computer ? <span>{user?.name ? user.name : ""} VS {computer?.name ? computer.name : ""} "{Difficulty} level"</span>:""}
       </div>
     );
   }

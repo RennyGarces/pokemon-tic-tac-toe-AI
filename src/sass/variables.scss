@@ -2,9 +2,10 @@
 
 ////////////////////////////////////
 $primary-color: #c03939;
-$secondary-color: #ebe48ecb;
+$secondary-color: #ebe38e;
 $dark-color:#1b1a1a8e;
 $transparent : rgba(59, 57, 57, 0.452);
+$green_color: rgb(172, 199, 146);
 /////////////////////////////////////////
 $size-large: 78.15em; // 1250px
 $size-medium: 62.25em; // 980px
@@ -31,7 +32,7 @@ $size-smallest: 31.25em; // 500px
   text-shadow: 1px 1px $secondary-color;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 0 2px 1px $transparent;
-  background-color: $primary-color;
+  background-color:$secondary-color;
   border-left: 0.2px solid $dark-color;
   border-radius: 3px;
   padding: 0.3rem;
